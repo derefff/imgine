@@ -4,3 +4,4 @@ pyvenv.cfg
 Scripts/
 *.png
 *.jpg
+__pycache__
