@@ -36,30 +36,23 @@ def validate_cli_arguments():
                 match flag:
                     case "-in":
                         for file in arguments:
-                            if os.path.isfile(file) and os.path.splitext(file)[1] in [".png",".jpeg",".jpg"]:
-                                print("File exists and it's valid")
-                            else:
+                            if not os.path.isfile(file) and not os.path.splitext(file)[-1] in [".png",".jpeg",".jpg"]:
                                 raise Exception(f'Please check if "{file}" exists and has valid extension!')
                         
                     case "-IN":
-                        if  os.path.exists("./"+arguments[0]): #and os.path.isdir("./"+arguments[0]):
-                            print(f"{arguments[0]} exists")
-                        else:
+                        if not os.path.exists("./"+arguments[0]) and not os.path.isdir("./"+arguments[0]):
                             raise Exception(f'Cannot find "{arguments[0]}" folder!')
-                        
-                    case "-o" | "-out":
-                        if not os.path.splitext(file)[-1] in [".png",".jpeg",".jpg"]:
-                            raise Exception(f'Please check if -o [filename] and has valid file extension!')
 
+                    case "-o" | "-out":
+                        if not os.path.splitext(arguments[0])[-1] in [".png",".jpeg",".jpg"]:
+                            raise Exception(f'Please check if -o [filename] has valid file extension!')
                     case "-rows":
-                        #check if number
-                        pass
+                        if not arguments[0].isnumeric():
+                            raise Exception(f'Use numeric value to specify -rows!') 
                     case "-cols":
-                        #check if number
-                        pass
+                        if not arguments[0].isnumeric():
+                            raise Exception(f'Use numeric value to specify -cols!') 
                     case "-gap":
-                        #check if number
-                        pass
-                    case "-h":
-                        pass
+                        if not arguments[0].isnumeric():
+                            raise Exception(f'Use numeric value to specify -gap!')
 
