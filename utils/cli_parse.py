@@ -47,10 +47,10 @@ def validate_cli_arguments():
                         else:
                             raise Exception(f'Cannot find "{arguments[0]}" folder!')
                         
-                    #case "-out":
-                    case "-o":
-                        #check if string with file extension
-                        pass
+                    case "-o" | "-out":
+                        if not os.path.splitext(file)[-1] in [".png",".jpeg",".jpg"]:
+                            raise Exception(f'Please check if -o [filename] and has valid file extension!')
+
                     case "-rows":
                         #check if number
                         pass
