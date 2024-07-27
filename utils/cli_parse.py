@@ -30,15 +30,19 @@ def validate_cli_arguments():
         #print(f"{pair}")
         for flag, arguments in pair.items():
             #print(f"{flag} with {arguments}")
-            if FLAGS_ARGUMENT_NUMBER[flag] != len(arguments):
+            if flag != "-in" and FLAGS_ARGUMENT_NUMBER[flag] != len(arguments):
                 raise Exception(f'Unexpected arguments number of flag: "{flag}"! Use -h how to use program.')
             else:
                 match flag:
                     case "-in":
-                        # check for file extensions 
-                        pass
+                        for file in arguments:
+                            if os.path.isfile(file) and os.path.splitext(file)[1] in [".png",".jpeg",".jpg"]:
+                                print("File exists and it's valid")
+                            else:
+                                raise Exception(f'Please check if "{file}" exists and has valid extension!')
+                        
                     case "-IN":
-                        if  os.path.exists("./"+arguments[0]):
+                        if  os.path.exists("./"+arguments[0]): #and os.path.isdir("./"+arguments[0]):
                             print(f"{arguments[0]} exists")
                         else:
                             raise Exception(f'Cannot find "{arguments[0]}" folder!')
