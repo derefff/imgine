@@ -1,37 +1,11 @@
 import sys
+import os
 arg_list = []
 
 VIABLE_FLAGS = ["-h", "-in", "-IN", "-out", "-o", "-rows", "-cols", "-gap"]
+FLAGS_ARGUMENT_NUMBER = {"-h":0, "-in":100, "-IN":1, "-out":1, "-o":1, "-rows":1, "-cols":1, "-gap":1}
 
-'''
-1. go through arg list and check flags
-2. validate the arguments that flags take
-3. put it in some kind of container
-'''
 current_index = 0
-
-'''
-match something:
-    case "-h":
-
-    case "-in":
-
-    case "-IN":
-
-    case "-out":
-    case "-o"
-
-    case "-rows":
-
-    case "-cols":
-
-    case "-gap"
-
-    case _:
-        ##default case 
-'''
-
-
 
 def tokenize_cli_arguments():
     temp_flag_arguments = []
@@ -49,3 +23,39 @@ def tokenize_cli_arguments():
             raise Exception(f' Unknown argument was passed: "{arg}"')
 
     arg_list.append({current_flag : temp_flag_arguments}) # last pair
+
+
+def validate_cli_arguments():
+    for pair in arg_list:
+        #print(f"{pair}")
+        for flag, arguments in pair.items():
+            #print(f"{flag} with {arguments}")
+            if FLAGS_ARGUMENT_NUMBER[flag] != len(arguments):
+                raise Exception(f'Unexpected arguments number of flag: "{flag}"! Use -h how to use program.')
+            else:
+                match flag:
+                    case "-in":
+                        # check for file extensions 
+                        pass
+                    case "-IN":
+                        if  os.path.exists("./"+arguments[0]):
+                            print(f"{arguments[0]} exists")
+                        else:
+                            raise Exception(f'Cannot find "{arguments[0]}" folder!')
+                        
+                    #case "-out":
+                    case "-o":
+                        #check if string with file extension
+                        pass
+                    case "-rows":
+                        #check if number
+                        pass
+                    case "-cols":
+                        #check if number
+                        pass
+                    case "-gap":
+                        #check if number
+                        pass
+                    case "-h":
+                        pass
+
