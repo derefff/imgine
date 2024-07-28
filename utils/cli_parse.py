@@ -1,6 +1,6 @@
 import sys
 import os
-arg_list = []
+
 
 VIABLE_FLAGS = ["-h", "-in", "-IN", "-out", "-o", "-rows", "-cols", "-gap"]
 FLAGS_ARGUMENT_NUMBER = {"-h":0, "-in":100, "-IN":1, "-out":1, "-o":1, "-rows":1, "-cols":1, "-gap":1}
@@ -10,6 +10,7 @@ current_index = 0
 def tokenize_cli_arguments():
     temp_flag_arguments = []
     current_flag = ""
+    arg_list = []
 
     for arg in sys.argv[1:]:
         if arg in VIABLE_FLAGS and arg != current_flag:
@@ -23,9 +24,10 @@ def tokenize_cli_arguments():
             raise Exception(f' Unknown argument was passed: "{arg}"')
 
     arg_list.append({current_flag : temp_flag_arguments}) # last pair
+    return arg_list
 
 
-def validate_cli_arguments():
+def validate_cli_arguments(arg_list):
     for pair in arg_list:
         #print(f"{pair}")
         for flag, arguments in pair.items():
