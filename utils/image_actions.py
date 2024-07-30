@@ -26,6 +26,17 @@ def determine_size(images):
 
     return width, height
 
+def adjust_size(images, w, h):
+    adj_imgs = []
+    for img in images:
+        frac_w = abs(img.width - w)/2
+        frac_h = abs(img.height - h)/2
+        subrect = (frac_w,frac_h, frac_w+w, frac_h+h)
+        print(f"frac_w{ frac_w} frac_h {frac_h}")
+        adj_imgs.append(img.crop(subrect))
+    
+    return adj_imgs
+
 '''
 1. load images
 2. dtermine/adjust image sizes
@@ -40,3 +51,4 @@ def cli_image_combine():
         images.append(load_img(i))
 
     width, height = determine_size(images)
+    images = adjust_size(images, width, height)
