@@ -2,7 +2,7 @@ from PIL import Image, ImageFont, ImageDraw
 
 settings = {
     'images': [],
-    'image-folder': ''
+    'image-folder': '',
     'rows': 2,
     'cols': 2,
     'gapX': 4,
@@ -10,6 +10,25 @@ settings = {
     'output-name': 'output.png'
 }
 
+def apply_arg_list_to_settings(arg_list):
+    for arg in arg_list:
+        for opt, value in arg.items():
+            match opt:
+                case "-rows":
+                    settings["rows"] = float(value[0])
+                case "-cols":
+                    settings["cols"] = float(value[0])
+                case "-gap":
+                    settings["gapX"] = float(value[0])
+                    settings["gapY"] = float(value[0])
+                case "-in":
+                    settings["images"] = value
+                case "-IN":
+                    settings["image-folder"] = value[0]
+                case "-out" | "-o":
+                    settings["output-name"] = value[0]
+
+    #print(settings)
 def load_img(name):
     return Image.open(name)
 
