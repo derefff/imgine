@@ -3,7 +3,7 @@ from PIL import Image, ImageFont, ImageDraw
 settings = {
     'images': [],
     'image-folder': '',
-    'rows': 2,
+    'rows': 1,
     'cols': 2,
     'gapX': 4,
     'gapY': 4,
@@ -15,12 +15,12 @@ def apply_arg_list_to_settings(arg_list):
         for opt, value in arg.items():
             match opt:
                 case "-rows":
-                    settings["rows"] = float(value[0])
+                    settings["rows"] = int(value[0])
                 case "-cols":
-                    settings["cols"] = float(value[0])
+                    settings["cols"] = int(value[0])
                 case "-gap":
-                    settings["gapX"] = float(value[0])
-                    settings["gapY"] = float(value[0])
+                    settings["gapX"] = int(value[0])
+                    settings["gapY"] = int(value[0])
                 case "-in":
                     settings["images"] = value
                 case "-IN":
@@ -51,16 +51,33 @@ def adjust_size(images, w, h):
         frac_w = abs(img.width - w)/2
         frac_h = abs(img.height - h)/2
         subrect = (frac_w,frac_h, frac_w+w, frac_h+h)
-        print(f"frac_w{ frac_w} frac_h {frac_h}")
+        #print(f"frac_w{ frac_w} frac_h {frac_h}")
         adj_imgs.append(img.crop(subrect))
     
     return adj_imgs
 
-'''
-1. load images
-2. dtermine/adjust image sizes
-3. marge and save images
-'''
+def merge(images, w, h):
+    width = w * settings['cols'] + settings['gapX'] * (settings['cols']-1)
+    height = h * settings['rows'] + settings['gapY'] * (settings['rows']-1)
+
+    output = Image.new("RGB", (width, height), (255,255,255))
+
+    current_column = 0
+    current_row = 0
+
+    for i in range(len(images)):
+        x = current_column * (w + settings['gapX'])
+        y = current_row * (h + settings['gapY'])
+
+        output.paste(images[i], (x, y))
+
+        current_column += 1
+        if current_column >= settings['cols']:
+            current_column  = 0
+            current_row += 1
+    
+    return output
+
 
 def cli_image_combine():
     # here will go everyting
@@ -71,3 +88,5 @@ def cli_image_combine():
 
     width, height = determine_size(images)
     images = adjust_size(images, width, height)
+
+    merge(images, width, height).save(settings['output-name'])
