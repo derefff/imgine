@@ -4,9 +4,9 @@ Imgine is simple Cli tool, that combine images into one output of (N x M) layout
 
 ## Usage
 
-The only dependency is `Pillow` liblary
+The only dependency is `Pillow` library
 
-Running programw via python:
+Running program via python:
 ```bash
 python imgine <flags>
 ```
@@ -17,8 +17,8 @@ imgine <flags>
 
 | Avaiable flags| description
 |-------|--------
-|-in [<file1> ...]| Pass images files to combine
-|-IN <directory>| Pass path to directory with images to cobine
+|-in [file1 file2 ...]| Pass images files to combine
+|-IN | Pass path to directory with images to cobine
 |-out| Set name of output image
 |-rows| Set number of rows (default 1)
 |-cols| Set number of columns (default 2)
