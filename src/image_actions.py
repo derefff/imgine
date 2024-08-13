@@ -1,8 +1,8 @@
 from PIL import Image, ImageFont, ImageDraw 
+import os
 
 settings = {
     'images': [],
-    'image-folder': '',
     'rows': 1,
     'cols': 2,
     'gapX': 4,
@@ -22,9 +22,17 @@ def apply_arg_list_to_settings(arg_list):
                     settings["gapX"] = int(value[0])
                     settings["gapY"] = int(value[0])
                 case "-in":
-                    settings["images"] = value
+                    if "-IN" not in arg: 
+                        settings["images"] = value
                 case "-IN":
-                    settings["image-folder"] = value[0]
+                    #settings["image-folder"] = value[0]
+                    for file in os.listdir(value[0]):
+                        if not os.path.splitext(file)[-1] in [".png",".jpeg",".jpg"]:
+                            continue
+                        else:
+                            settings['images'].append(value[0]+"/"+file)
+
+                    #print(f" images : {settings['images']}")
                 case "-out" | "-o":
                     settings["output-name"] = value[0]
 
@@ -82,7 +90,7 @@ def merge(images, w, h):
 def cli_image_combine():
     # here will go everyting
     images = []
-
+    #print(f" images cli combine : {settings['images']}")
     for i in settings['images']:
         images.append(load_img(i))
 

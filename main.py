@@ -9,7 +9,7 @@ from image_actions import *
 def usage():
     print("-in [<file1> ...]     - Include images passed a")
     print("-IN <direcotry>       - Use images in declared path to directory.")
-    print("-out or -o            - Set name of output image")
+    print("-out / -o <file>      - Set name of output image")
     print("-rows                 - Set number of rows, by default is set to 1")
     print("-cols                 - Set number of cols, by default is set to 2")
     print("-gap                  - Set gap between images, by default is set to 4")
