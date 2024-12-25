@@ -1,9 +1,8 @@
 import sys
 import os
 
-
-VIABLE_FLAGS = ["-h", "-in", "-IN", "-out", "-o", "-rows", "-cols", "-gap"]
-FLAGS_ARGUMENT_NUMBER = {"-h":0, "-in":100, "-IN":1, "-out":1, "-o":1, "-rows":1, "-cols":1, "-gap":1}
+VIABLE_FLAGS = ["-h", "-in", "-IN", "-out", "-o", "-rows", "-cols", "-gap", "-on", "-oa"]
+FLAGS_ARGUMENT_NUMBER = {"-h":0, "-in":100, "-IN":1, "-out":1, "-o":1, "-rows":1, "-cols":1, "-gap":1, "-on":0, "-oa":0}
 
 current_index = 0
 
@@ -40,7 +39,7 @@ def validate_cli_arguments(arg_list):
                         for file in arguments:
                             if not os.path.isfile(file) and not os.path.splitext(file)[-1] in [".png",".jpeg",".jpg"]:
                                 raise Exception(f'Please check if "{file}" exists and has valid extension!')
-                        
+
                     case "-IN":
                         if not os.path.exists("./"+arguments[0]) and not os.path.isdir("./"+arguments[0]):
                             raise Exception(f'Cannot find "{arguments[0]}" folder!')
@@ -50,11 +49,16 @@ def validate_cli_arguments(arg_list):
                             raise Exception(f'Please check if -o [filename] has valid file extension!')
                     case "-rows":
                         if not arguments[0].isnumeric():
-                            raise Exception(f'Use numeric value to specify -rows!') 
+                            raise Exception(f'Use numeric value to specify -rows!')
                     case "-cols":
                         if not arguments[0].isnumeric():
-                            raise Exception(f'Use numeric value to specify -cols!') 
+                            raise Exception(f'Use numeric value to specify -cols!')
                     case "-gap":
                         if not arguments[0].isnumeric():
                             raise Exception(f'Use numeric value to specify -gap!')
-
+                    case "-on":
+                      if len(arguments) > 0:
+                          raise Exception(f'The flag "-on" does not accept arguments!')
+                    case "-oa":
+                        if len(arguments) > 0:
+                            raise Exception(f'The flag "-an" does not accept arguments!')

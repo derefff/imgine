@@ -1,4 +1,4 @@
-from PIL import Image, ImageFont, ImageDraw 
+from PIL import Image, ImageFont, ImageDraw
 import os
 
 settings = {
@@ -7,7 +7,9 @@ settings = {
     'cols': 2,
     'gapX': 4,
     'gapY': 4,
-    'output-name': 'output.png'
+    'output-name': 'output.png',
+    'overlay-numbers': False,
+    'overlay-letters': False
 }
 
 def apply_arg_list_to_settings(arg_list):
@@ -22,32 +24,37 @@ def apply_arg_list_to_settings(arg_list):
                     settings["gapX"] = int(value[0])
                     settings["gapY"] = int(value[0])
                 case "-in":
-                    if "-IN" not in arg: 
+                    if "-IN" not in arg:
                         settings["images"] = value
                 case "-IN":
-                    #settings["image-folder"] = value[0]
                     for file in os.listdir(value[0]):
                         if not os.path.splitext(file)[-1] in [".png",".jpeg",".jpg"]:
                             continue
                         else:
                             settings['images'].append(value[0]+"/"+file)
 
-                    #print(f" images : {settings['images']}")
                 case "-out" | "-o":
                     settings["output-name"] = value[0]
+                case "-on":
+                    settings["overlay-numbers"] = True
+                    settings["overlay-letters"] = False
+                case "-oa":
+                    settings["overlay-letters"] = True
+                    settings["overlay-numbers"] = False
+
 
     #print(settings)
 def load_img(name):
     return Image.open(name)
 
-#getting the min width and min height 
+#getting the min width and min height
 def determine_size(images):
     width = images[0].width
     height = images[0].height
     for img in images:
         if img.width < width:
             width = img.width
-        
+
         if img.height < height:
             height = img.height
 
@@ -59,10 +66,31 @@ def adjust_size(images, w, h):
         frac_w = abs(img.width - w)/2
         frac_h = abs(img.height - h)/2
         subrect = (frac_w,frac_h, frac_w+w, frac_h+h)
-        #print(f"frac_w{ frac_w} frac_h {frac_h}")
         adj_imgs.append(img.crop(subrect))
-    
+
     return adj_imgs
+
+def add_overlay(images):
+    font_size = 14
+    try:
+        font = ImageFont.truetype("arial.ttf", font_size)
+    except IOError:
+        font = ImageFont.load_default()
+
+    for i, img in enumerate(images):
+        draw = ImageDraw.Draw(img)
+        text = ""
+
+        if settings['overlay-numbers']:
+            text = f"{i + 1})"
+        if settings['overlay-letters']:
+            text = f"{chr(97 + i)})"  # 97 -> ASCII 'a'
+
+        if text:
+            print("aplikujemy")
+            draw.text((15,15), text, fill="black", font=font)
+
+    return images
 
 def merge(images, w, h):
     width = w * settings['cols'] + settings['gapX'] * (settings['cols']-1)
@@ -83,18 +111,20 @@ def merge(images, w, h):
         if current_column >= settings['cols']:
             current_column  = 0
             current_row += 1
-    
+
     return output
 
 
 def cli_image_combine():
     # here will go everyting
     images = []
-    #print(f" images cli combine : {settings['images']}")
     for i in settings['images']:
         images.append(load_img(i))
 
     width, height = determine_size(images)
     images = adjust_size(images, width, height)
+
+    if settings['overlay-numbers'] or settings['overlay-letters']:
+      images = add_overlay(images)
 
     merge(images, width, height).save(settings['output-name'])

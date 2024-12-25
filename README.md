@@ -23,10 +23,12 @@ imgine <flags>
 |-rows| Set number of rows (default 1)
 |-cols| Set number of columns (default 2)
 |-rows| Set size of gap between images (default 4)
+|-oa| Set letter indexing / alphabetical ordering
+|-on| Set number indexing / numeric ordering
 
 ## Future improvements
 
 The tool is quite simple, however in the future I would like to add small improvments:
 - make interpreter of `.imgin` files, that would have way more options of editing images/output etc.
-- add indexing option, where each image would be labeled (i.e. <a) b) ...>) 
+- add indexing option, where each image would be labeled (i.e. <a) b) ...>)
 
