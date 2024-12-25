@@ -1,8 +1,8 @@
 import sys
 import os
 
-VIABLE_FLAGS = ["-h", "-in", "-IN", "-out", "-o", "-rows", "-cols", "-gap", "-on", "-oa"]
-FLAGS_ARGUMENT_NUMBER = {"-h":0, "-in":100, "-IN":1, "-out":1, "-o":1, "-rows":1, "-cols":1, "-gap":1, "-on":0, "-oa":0}
+VIABLE_FLAGS = ["-h", "-in", "-IN", "-out", "-o", "-rows", "-cols", "-gap", "-on", "-oa", "-fs", "-fontsize", "-ifc", "-inversefontcolor"]
+FLAGS_ARGUMENT_NUMBER = {"-h":0, "-in":100, "-IN":1, "-out":1, "-o":1, "-rows":1, "-cols":1, "-gap":1, "-fs":1, "-fontsize":1, "-on":0, "-oa":0, "-ifc": 0, "-inversefontcolor":0}
 
 current_index = 0
 
@@ -56,9 +56,15 @@ def validate_cli_arguments(arg_list):
                     case "-gap":
                         if not arguments[0].isnumeric():
                             raise Exception(f'Use numeric value to specify -gap!')
+                    case "-fs" | "-fontsize":
+                        if not arguments[0].isnumeric():
+                            raise Exception(f'Use numeric value to specify font size!')
                     case "-on":
                       if len(arguments) > 0:
                           raise Exception(f'The flag "-on" does not accept arguments!')
                     case "-oa":
                         if len(arguments) > 0:
                             raise Exception(f'The flag "-an" does not accept arguments!')
+                    case "-ifc" | "-inversefontcolor":
+                        if len(arguments) > 0:
+                            raise Exception(f'The flag "-ifc"/ "-inversefontcolor" does not accept arguments!')

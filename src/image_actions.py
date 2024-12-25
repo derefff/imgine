@@ -7,9 +7,12 @@ settings = {
     'cols': 2,
     'gapX': 4,
     'gapY': 4,
+    'font-size': 14,
     'output-name': 'output.png',
     'overlay-numbers': False,
-    'overlay-letters': False
+    'overlay-letters': False,
+    'inverse-font-color': False,
+
 }
 
 def apply_arg_list_to_settings(arg_list):
@@ -23,6 +26,8 @@ def apply_arg_list_to_settings(arg_list):
                 case "-gap":
                     settings["gapX"] = int(value[0])
                     settings["gapY"] = int(value[0])
+                case "-fs" | "-fontsize":
+                    settings["font-size"] = int(value[0])
                 case "-in":
                     if "-IN" not in arg:
                         settings["images"] = value
@@ -41,6 +46,8 @@ def apply_arg_list_to_settings(arg_list):
                 case "-oa":
                     settings["overlay-letters"] = True
                     settings["overlay-numbers"] = False
+                case "-ifc" | "-inversefontcolor":
+                    settings["inverse-font-color"] = True
 
 
     #print(settings)
@@ -71,9 +78,11 @@ def adjust_size(images, w, h):
     return adj_imgs
 
 def add_overlay(images):
-    font_size = 14
+    font_size = int(settings["font-size"])
+
     try:
         font = ImageFont.truetype("arial.ttf", font_size)
+        #font = ImageFont.truetype("LiberationSans-Regular.ttf", font_size)
     except IOError:
         font = ImageFont.load_default()
 
@@ -87,8 +96,8 @@ def add_overlay(images):
             text = f"{chr(97 + i)})"  # 97 -> ASCII 'a'
 
         if text:
-            print("aplikujemy")
-            draw.text((15,15), text, fill="black", font=font)
+            fill_color = "white" if settings["inverse-font-color"] else "black"
+            draw.text((15,15), text, fill=fill_color, font=font)
 
     return images
 
