@@ -1,6 +1,4 @@
 import sys
-from PIL import Image, ImageFont, ImageDraw 
-
 
 sys.path.append('./src')
 from cli_parse import *
@@ -14,11 +12,8 @@ def usage():
     print("-cols                 - Set number of cols, by default is set to 2")
     print("-gap                  - Set gap between images, by default is set to 4")
 
-
-
-
 def main():
-    if sys.argv[1] == "-h":
+    if len(sys.argv) <= 1 or sys.argv[1] == "-h":
         usage()
     else:
         arg_list = tokenize_cli_arguments()
